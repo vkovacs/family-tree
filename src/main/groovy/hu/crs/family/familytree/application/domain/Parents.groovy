@@ -1,9 +1,18 @@
 package hu.crs.family.familytree.application.domain
 
-import groovy.transform.Immutable
+import com.fasterxml.jackson.annotation.JsonValue
 
-@Immutable
 class Parents {
-    Member father
-    Member mother
+    String fatherId
+    String motherId
+
+    @Override
+    @JsonValue
+    String toString() {
+        fatherId + ";" + motherId
+    }
+
+    Parents(String toDeserialize) {
+        (fatherId, motherId) = toDeserialize.split(";")
+    }
 }

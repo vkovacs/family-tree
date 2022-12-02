@@ -25,7 +25,7 @@ class FamilyRepositoryTest {
 
         //then
         assertThat(underTest.getFamily(), aMapWithSize(1))
-        assertThat(underTest.getFamily().get(new Parents(father, mother)), containsInAnyOrder(child))
+        assertThat(underTest.getFamily().get(new Parents(father.getId(), mother.getId())), containsInAnyOrder(child))
     }
 
     @Test
@@ -43,7 +43,7 @@ class FamilyRepositoryTest {
 
         //then
         assertThat(underTest.getFamily(), aMapWithSize(1))
-        assertThat(underTest.getFamily().get(new Parents(father, mother)), containsInAnyOrder(child0, child1))
+        assertThat(underTest.getFamily().get(new Parents(father.getId(), mother.getId())), containsInAnyOrder(child0, child1))
     }
 
     @Test
@@ -66,7 +66,7 @@ class FamilyRepositoryTest {
 
         //then
         assertThat(underTest.getFamily(), aMapWithSize(2))
-        assertThat(underTest.getFamily().get(new Parents(father0, mother0)), containsInAnyOrder(child000, child001))
-        assertThat(underTest.getFamily().get(new Parents(father1, mother1)), contains(child110))
+        assertThat(underTest.getFamily().get(new Parents(father0.getId(), mother0.getId())), containsInAnyOrder(child000, child001))
+        assertThat(underTest.getFamily().get(new Parents(father1.getId(), mother1.getId())), contains(child110))
     }
 }

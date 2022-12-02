@@ -9,5 +9,4 @@ class FamilyTreeApplication {
 	static void main(String[] args) {
 		SpringApplication.run(FamilyTreeApplication, args)
 	}
-
 }
