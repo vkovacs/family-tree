@@ -12,6 +12,7 @@ class Parents {
         fatherId + ";" + motherId
     }
 
+    //https://www.baeldung.com/jackson-map
     Parents(String toDeserialize) {
         (fatherId, motherId) = toDeserialize.split(";")
     }
