@@ -12,4 +12,9 @@ class Member {
     Member father
     LocalDate dateOfBirth
     LocalDate dateOfDeath
+
+    @Override
+    String toString() {
+        return "name"
+    }
 }

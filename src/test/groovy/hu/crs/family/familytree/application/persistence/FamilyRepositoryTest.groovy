@@ -5,6 +5,7 @@ import hu.crs.family.familytree.application.domain.Parents
 import org.junit.jupiter.api.Test
 
 import static org.hamcrest.MatcherAssert.assertThat
+import static org.hamcrest.Matchers.contains
 import static org.hamcrest.Matchers.containsInAnyOrder
 import static org.hamcrest.collection.IsMapWithSize.aMapWithSize
 
@@ -43,5 +44,29 @@ class FamilyRepositoryTest {
         //then
         assertThat(underTest.getFamily(), aMapWithSize(1))
         assertThat(underTest.getFamily().get(new Parents(father, mother)), containsInAnyOrder(child0, child1))
+    }
+
+    @Test
+    void listAllMembers() {
+        //give
+        def father0 = new Member(id: "fatherId0")
+        def mother0 = new Member(id: "motherId0")
+
+        def child000 = new Member(id: "childId000", father: father0, mother: mother0)
+        def child001 = new Member(id: "childId001", father: father0, mother: mother0)
+
+        def father1 = new Member(id: "fatherId1")
+        def mother1 = new Member(id: "motherId1")
+        def child110 = new Member(id: "childId110", father: father1, mother: mother1)
+
+        //when
+        underTest.save(child000)
+        underTest.save(child001)
+        underTest.save(child110)
+
+        //then
+        assertThat(underTest.getFamily(), aMapWithSize(2))
+        assertThat(underTest.getFamily().get(new Parents(father0, mother0)), containsInAnyOrder(child000, child001))
+        assertThat(underTest.getFamily().get(new Parents(father1, mother1)), contains(child110))
     }
 }
