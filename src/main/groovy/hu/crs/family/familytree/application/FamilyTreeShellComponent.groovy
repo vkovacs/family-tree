@@ -14,12 +14,12 @@ class FamilyTreeShellComponent {
     private FamilyTreeService familyTreeService
 
     @ShellMethod(value = "Add member to family")
-    void addMember(@ShellOption("--name") String name) {
+    void memberAdd(@ShellOption("--name") String name) {
         familyTreeService.addMember(name)
     }
 
     @ShellMethod(value = "List family members")
-    void listMembers() {
+    void membersList() {
         familyTreeService.listMembers()
     }
 }

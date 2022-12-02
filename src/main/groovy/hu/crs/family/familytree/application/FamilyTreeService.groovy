@@ -17,9 +17,8 @@ class FamilyTreeService {
         familyRepository.save(new Member(name: name))
     }
 
-    List<Member> listMembers() {
+    void listMembers() {
         def members = familyRepository.listMembers()
         println(members)
-        members
     }
 }
