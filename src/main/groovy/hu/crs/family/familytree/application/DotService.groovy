@@ -18,26 +18,16 @@ class DotService {
         def content = ""
         family.each {
             def fatherId = it.getKey().fatherId
-            def father = familyRepository.findById(fatherId)
-            def fatherName = father != null ? father.getName() : "Unknown Father"
             def motherId  = it.getKey().motherId
-            def mother = familyRepository.findById(motherId)
-            def motherName = mother != null ? mother.getName() : "Unknown Mother"
-
-//            //Unknown parent names
-//            content += """
-//            $fatherId [label ="$fatherName"]
-//            $motherId [label ="$motherName"]
-//            """
 
             //children names
             it.getValue().forEach{
                 content += """
                     "$it.id" [label ="$it.name"]
                 """
-
             }
 
+            //children ids
             def children = it.getValue().collect {
                 """
                     "${it.getId()}"
@@ -51,6 +41,18 @@ class DotService {
                 "$motherId" -> "$fatherId"
                 """
         }
+
+        def idSet = familyRepository.getFamily().keySet().collect { it.fatherId } as Set
+        idSet.addAll(familyRepository.getFamily().keySet().collect {it.getMotherId()})
+        idSet.removeAll(familyRepository.listMembers().collect {it.id})
+
+        idSet.forEach{
+            content += """
+                    "$it" [label ="N/A"]
+                """
+
+        }
+
         "digraph G { ${content} }"
     }
 }
