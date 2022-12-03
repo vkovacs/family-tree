@@ -3,7 +3,6 @@ package hu.crs.family.familytree.application
 import groovy.util.logging.Log
 import org.springframework.shell.standard.ShellComponent
 import org.springframework.shell.standard.ShellMethod
-import org.springframework.shell.standard.ShellOption
 
 @Log
 @ShellComponent
@@ -15,8 +14,9 @@ class FamilyTreeShellComponent {
     }
 
     @ShellMethod(value = "Add member to family")
-    void add(@ShellOption("--name") String name) {
-        familyTreeService.addMember(name)
+    void add(String memberSpecifier) {
+        def (name, mother, father, yearOfBirth, yearOfDeath) = memberSpecifier.split(";")
+        familyTreeService.addMember(name, mother, father, yearOfBirth, yearOfDeath)
     }
 
     @ShellMethod(value = "List family members")

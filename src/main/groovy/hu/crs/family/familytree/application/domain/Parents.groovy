@@ -1,7 +1,9 @@
 package hu.crs.family.familytree.application.domain
 
 import com.fasterxml.jackson.annotation.JsonValue
+import groovy.transform.EqualsAndHashCode
 
+@EqualsAndHashCode
 class Parents {
     String fatherId
     String motherId

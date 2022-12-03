@@ -4,10 +4,14 @@ import groovy.transform.Immutable
 
 @Immutable
 class Member {
-    String id = UUID.randomUUID().toString().substring(0,8)
+    String id = randomId()
     String name
-    Member mother
-    Member father
+    String motherId
+    String fatherId
     int yearOfBirth
     int yearOfDeath
+
+    static randomId() {
+        UUID.randomUUID().toString().substring(0,8)
+    }
 }

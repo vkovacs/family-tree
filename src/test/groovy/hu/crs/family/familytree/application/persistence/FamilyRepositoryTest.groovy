@@ -18,7 +18,7 @@ class FamilyRepositoryTest {
         def father = new Member(id: "fatherId")
         def mother = new Member(id: "motherId")
 
-        def child = new Member(id: "childId", father: father, mother: mother)
+        def child = new Member(id: "childId", fatherId: "fatherId", motherId: "motherId")
 
         //when
         underTest.save(child)
@@ -34,8 +34,8 @@ class FamilyRepositoryTest {
         def father = new Member(id: "fatherId")
         def mother = new Member(id: "motherId")
 
-        def child0 = new Member(id: "childId0", father: father, mother: mother)
-        def child1 = new Member(id: "childId1", father: father, mother: mother)
+        def child0 = new Member(id: "childId0", fatherId: "fatherId", motherId: "motherId")
+        def child1 = new Member(id: "childId1", fatherId: "fatherId", motherId: "motherId")
 
         //when
         underTest.save(child0)
@@ -52,12 +52,12 @@ class FamilyRepositoryTest {
         def father0 = new Member(id: "fatherId0")
         def mother0 = new Member(id: "motherId0")
 
-        def child000 = new Member(id: "childId000", father: father0, mother: mother0)
-        def child001 = new Member(id: "childId001", father: father0, mother: mother0)
+        def child000 = new Member(id: "childId000", fatherId: "fatherId0", motherId: "motherId0")
+        def child001 = new Member(id: "childId001", fatherId: "fatherId0", motherId: "motherId0")
 
         def father1 = new Member(id: "fatherId1")
         def mother1 = new Member(id: "motherId1")
-        def child110 = new Member(id: "childId110", father: father1, mother: mother1)
+        def child110 = new Member(id: "childId110", fatherId: "fatherId1", motherId: "motherId1")
 
         //when
         underTest.save(child000)

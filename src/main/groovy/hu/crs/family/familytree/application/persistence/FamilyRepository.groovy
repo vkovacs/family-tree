@@ -11,9 +11,9 @@ class FamilyRepository {
     Map<Parents, List<Member>> family = new HashMap<>()
 
     void save(Member member) {
-        Member father = member.getFather() ?: new Member(name: "Unknown Father")
-        Member mother = member.getMother() ?: new Member(name: "Unknown Mother")
-        def key = new Parents(father.getId(), mother.getId())
+        def fatherId = member.getFatherId() ?: Member.randomId()
+        def motherId = member.getMotherId() ?: Member.randomId()
+        def key = new Parents(fatherId, motherId)
 
         family.merge(key, List.of(member), (members, value) -> (Stream.concat(members.stream(), Stream.of(member)).toList()))
     }
