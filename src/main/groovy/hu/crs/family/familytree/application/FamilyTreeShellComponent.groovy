@@ -42,4 +42,9 @@ class FamilyTreeShellComponent {
     void load() {
         familyTreeService.loadFamily()
     }
+
+    @ShellMethod(value = "Dot representation of the family")
+    void dot() {
+        familyTreeService.dot()
+    }
 }

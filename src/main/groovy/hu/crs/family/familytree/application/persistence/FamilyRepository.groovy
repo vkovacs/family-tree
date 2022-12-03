@@ -21,4 +21,8 @@ class FamilyRepository {
     List<Member> listMembers() {
         family.values().stream().flatMap(List::stream).toList() as List<Member>
     }
+
+    Member findById(String id) {
+        family.values().flatten().find {it.id == id}
+    }
 }

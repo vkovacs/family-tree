@@ -13,10 +13,12 @@ import java.time.Instant
 @Slf4j
 @Service
 class FamilyTreeService {
+    private final DotService dotService
     private final ObjectMapper objectMapper
     private final FamilyRepository familyRepository
 
-    FamilyTreeService(ObjectMapper objectMapper, FamilyRepository familyRepository) {
+    FamilyTreeService(DotService dotService, ObjectMapper objectMapper, FamilyRepository familyRepository) {
+        this.dotService = dotService
         this.objectMapper = objectMapper
         this.familyRepository = familyRepository
     }
@@ -47,11 +49,17 @@ class FamilyTreeService {
 
         def json = myFile.readLines().join()
 
-        TypeReference<HashMap<Parents, List<Member>>> familyMapTypeReference = new TypeReference<HashMap<Parents, List<Member>>>(){}
+        TypeReference<HashMap<Parents, List<Member>>> familyMapTypeReference = new TypeReference<HashMap<Parents, List<Member>>>() {
+        }
 
         def family = objectMapper.readValue(json, familyMapTypeReference)
 
         familyRepository.setFamily(family)
+    }
+
+    void dot() {
+        def dot = dotService.dot()
+        println(dot)
     }
 
     private void saveFile(String filename, String content) {
