@@ -25,4 +25,12 @@ class FamilyRepository {
     Member findById(String id) {
         family.values().flatten().find {it.id == id}
     }
+
+    List<Member> unknownParentIds() {
+        def parentIds = family.keySet().collect { it.fatherId } as Set
+        parentIds.addAll(family.keySet().collect {it.getMotherId()})
+        parentIds.removeAll(listMembers().collect {it.id})
+
+        parentIds as List<Member>
+    }
 }

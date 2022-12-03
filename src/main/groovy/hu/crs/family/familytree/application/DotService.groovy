@@ -42,15 +42,10 @@ class DotService {
                 """
         }
 
-        def idSet = familyRepository.getFamily().keySet().collect { it.fatherId } as Set
-        idSet.addAll(familyRepository.getFamily().keySet().collect {it.getMotherId()})
-        idSet.removeAll(familyRepository.listMembers().collect {it.id})
-
-        idSet.forEach{
+        familyRepository.unknownParentIds().forEach{
             content += """
                     "$it" [label ="N/A"]
                 """
-
         }
 
         "digraph G { ${content} }"
