@@ -15,8 +15,12 @@ class FamilyTreeShellComponent {
 
     @ShellMethod(value = "Add member to family")
     void add(String memberSpecifier) {
-        def (name, mother, father, yearOfBirth, yearOfDeath) = memberSpecifier.split(";")
-        familyTreeService.addMember(name, mother, father, yearOfBirth, yearOfDeath)
+        def (name, mother, father, yearOfBirth, yearOfDeath, note) = memberSpecifier.split(";")
+
+        yearOfBirth = yearOfBirth == "" ? null : yearOfBirth as Integer
+        yearOfDeath = yearOfDeath == "" ? null : yearOfDeath as Integer
+
+        familyTreeService.addMember(name, mother, father, yearOfBirth, yearOfDeath, note)
     }
 
     @ShellMethod(value = "List family members")

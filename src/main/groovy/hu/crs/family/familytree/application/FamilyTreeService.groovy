@@ -21,8 +21,8 @@ class FamilyTreeService {
         this.familyRepository = familyRepository
     }
 
-    void addMember(String name, String motherId, String fatherId, int yearOfBirth, int yearOfDeath) {
-        familyRepository.save(new Member(name: name, motherId: motherId, fatherId: fatherId, yearOfBirth: yearOfBirth, yearOfDeath: yearOfDeath))
+    void addMember(String name, String motherId, String fatherId, Integer yearOfBirth, Integer yearOfDeath, String note) {
+        familyRepository.save(new Member(name: name, motherId: motherId, fatherId: fatherId, yearOfBirth: yearOfBirth, yearOfDeath: yearOfDeath, note: note))
     }
 
     void listMembers() {
@@ -42,8 +42,10 @@ class FamilyTreeService {
     }
 
     void loadFamily() {
-        def myFile = new File("family.json")
-        def json = myFile.readLines()[0]
+        def userHome = System.getProperty("user.home");
+        def myFile = new File("${userHome}/.family/family.json")
+
+        def json = myFile.readLines().join()
 
         TypeReference<HashMap<Parents, List<Member>>> familyMapTypeReference = new TypeReference<HashMap<Parents, List<Member>>>(){}
 
