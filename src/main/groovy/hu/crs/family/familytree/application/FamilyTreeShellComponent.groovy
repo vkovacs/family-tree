@@ -25,7 +25,7 @@ class FamilyTreeShellComponent {
     }
 
     @ShellMethod(value = "Persist family into file")
-    void persist() {
+    void save() {
         familyTreeService.persistFamily()
     }
 

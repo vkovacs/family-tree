@@ -13,7 +13,7 @@ class FamilyRepository {
     void save(Member member) {
         Member father = member.getFather() ?: new Member(name: "Unknown Father")
         Member mother = member.getMother() ?: new Member(name: "Unknown Mother")
-        def key = new Parents(fatherId: father.getId(), motherId: mother.getId())
+        def key = new Parents(father.getId(), mother.getId())
 
         family.merge(key, List.of(member), (members, value) -> (Stream.concat(members.stream(), Stream.of(member)).toList()))
     }

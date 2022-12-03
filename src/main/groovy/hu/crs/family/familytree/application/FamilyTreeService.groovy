@@ -8,6 +8,8 @@ import hu.crs.family.familytree.application.domain.Parents
 import hu.crs.family.familytree.application.persistence.FamilyRepository
 import org.springframework.stereotype.Service
 
+import java.time.Instant
+
 @Slf4j
 @Service
 class FamilyTreeService {
@@ -30,8 +32,13 @@ class FamilyTreeService {
 
     void persistFamily() {
         def family = familyRepository.getFamily()
-        def myFile = new File("family.json")
-        myFile.write(objectMapper.writeValueAsString(family))
+        def content = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(family)
+        def userHome = System.getProperty("user.home");
+        saveFile("${userHome}/.family/family.json", content)
+
+        //backup
+        def timestamp = Instant.now().epochSecond
+        saveFile("${userHome}/.family/backup/family-backup-${timestamp}.json", content)
     }
 
     void loadFamily() {
@@ -43,5 +50,12 @@ class FamilyTreeService {
         def family = objectMapper.readValue(json, familyMapTypeReference)
 
         familyRepository.setFamily(family)
+    }
+
+    private void saveFile(String filename, String content) {
+        def myFile = new File(filename)
+        if (!myFile.exists()) myFile.getParentFile().mkdirs()
+
+        myFile.write(content)
     }
 }

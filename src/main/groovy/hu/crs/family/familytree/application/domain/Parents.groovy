@@ -16,4 +16,9 @@ class Parents {
     Parents(String toDeserialize) {
         (fatherId, motherId) = toDeserialize.split(";")
     }
+
+    Parents(String fatherId, String motherId) {
+        this.fatherId = fatherId
+        this.motherId = motherId
+    }
 }
