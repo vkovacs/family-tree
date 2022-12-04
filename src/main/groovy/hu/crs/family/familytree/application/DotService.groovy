@@ -34,16 +34,14 @@ class DotService {
                 """
             }.join(" ")
 
-            content += """
-                "$motherId" -- {$children}
-                "$fatherId" -- "$motherId"
-                """
-        }
+            def unknownParentIds = familyRepository.unknownParentIds()
 
-        familyRepository.unknownParentIds().forEach{
-            content += """
-                    "$it" [label ="N/A"]
-                """
+            if (!unknownParentIds.contains(motherId) && !unknownParentIds.contains(fatherId)) {
+                content += """
+                    "$motherId" -- {$children}
+                    "$fatherId" -- "$motherId"
+                    """
+            }
         }
 
         "graph G { ${content} }"
