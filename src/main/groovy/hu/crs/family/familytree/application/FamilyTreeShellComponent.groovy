@@ -25,7 +25,8 @@ class FamilyTreeShellComponent {
         def yearOfBirthInt = yearOfBirth == "" ? null : yearOfBirth as Integer
         def yearOfDeathInt = yearOfDeath == "" ? null : yearOfDeath as Integer
 
-        familyTreeService.addMember(name, motherId, fatherId, yearOfBirthInt, yearOfDeathInt, note)
+        def member = familyTreeService.addMember(name, motherId, fatherId, yearOfBirthInt, yearOfDeathInt, note)
+        println("${member.name} - ${member.id}")
     }
 
     @ShellMethod(value = "List family members")

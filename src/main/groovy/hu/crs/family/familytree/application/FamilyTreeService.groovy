@@ -23,8 +23,11 @@ class FamilyTreeService {
         this.familyRepository = familyRepository
     }
 
-    void addMember(String name, String motherId, String fatherId, Integer yearOfBirth, Integer yearOfDeath, String note) {
-        familyRepository.save(new Member(name: name, motherId: motherId, fatherId: fatherId, yearOfBirth: yearOfBirth, yearOfDeath: yearOfDeath, note: note))
+    Member addMember(String name, String motherId, String fatherId, Integer yearOfBirth, Integer yearOfDeath, String note) {
+        def member = new Member(name: name, motherId: motherId, fatherId: fatherId, yearOfBirth: yearOfBirth, yearOfDeath: yearOfDeath, note: note)
+        familyRepository.save(member)
+
+        member
     }
 
     void listMembers() {
