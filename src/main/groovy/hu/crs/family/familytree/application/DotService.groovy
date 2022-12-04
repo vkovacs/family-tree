@@ -16,19 +16,18 @@ class DotService {
         def family = familyRepository.getFamily()
 
         def content = ""
-        family.each {
-            def fatherId = it.getKey().fatherId
-            def motherId  = it.getKey().motherId
+        family.each { parents, children ->
+            def fatherId = parents.fatherId
+            def motherId = parents.motherId
 
             //children names
-            it.getValue().forEach{
+            children.forEach {
                 content += """
                     "$it.id" [label ="$it.name"]
                 """
             }
 
-            //children ids
-            def children = it.getValue().collect {
+            def childrenIds = children.collect {
                 """
                     "${it.getId()}"
                 """
@@ -38,7 +37,7 @@ class DotService {
 
             if (!unknownParentIds.contains(motherId) && !unknownParentIds.contains(fatherId)) {
                 content += """
-                    "$motherId" -- {$children}
+                    "$motherId" -- {$childrenIds}
                     "$fatherId" -- "$motherId"
                     """
             }
