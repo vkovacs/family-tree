@@ -12,6 +12,7 @@ import guru.nidi.graphviz.parse.Parser
 import hu.crs.family.familytree.application.domain.Member
 import hu.crs.family.familytree.application.domain.Parents
 import hu.crs.family.familytree.application.persistence.FamilyRepository
+import hu.crs.family.familytree.application.persistence.FileRepository
 import org.springframework.stereotype.Service
 
 import java.time.Instant
@@ -21,11 +22,13 @@ import java.time.Instant
 class FamilyTreeService {
     private final DotService dotService
     private final ObjectMapper objectMapper
+    private final FileRepository fileRepository
     private final FamilyRepository familyRepository
 
-    FamilyTreeService(DotService dotService, ObjectMapper objectMapper, FamilyRepository familyRepository) {
+    FamilyTreeService(DotService dotService, ObjectMapper objectMapper, FileRepository fileRepository, FamilyRepository familyRepository) {
         this.dotService = dotService
         this.objectMapper = objectMapper
+        this.fileRepository = fileRepository
         this.familyRepository = familyRepository
     }
 
@@ -36,27 +39,23 @@ class FamilyTreeService {
         member
     }
 
-    void listMembers() {
-        def members = familyRepository.listMembers()
-        println(members)
+    List<Member> listMembers() {
+        familyRepository.listMembers()
     }
 
     void persistFamily() {
         def family = familyRepository.getFamily()
         def content = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(family)
-        def userHome = System.getProperty("user.home");
-        saveFile("${userHome}/.family/family.json", content)
+        def userHome =
+        fileRepository.saveFile("family-tree.json", content)
 
         //backup
         def timestamp = Instant.now().epochSecond
-        saveFile("${userHome}/.family/backup/family-backup-${timestamp}.json", content)
+        fileRepository.saveBackupFile("family-tree-backup-${timestamp}.json", content)
     }
 
     void loadFamily() {
-        def userHome = System.getProperty("user.home");
-        def myFile = new File("${userHome}/.family/family.json")
-
-        def json = myFile.readLines().join()
+        def json = fileRepository.load("family-tree.json")
 
         TypeReference<HashMap<Parents, List<Member>>> familyMapTypeReference = new TypeReference<HashMap<Parents, List<Member>>>() {
         }
@@ -70,13 +69,6 @@ class FamilyTreeService {
         dotService.dot()
     }
 
-    private void saveFile(String filename, String content) {
-        def myFile = new File(filename)
-        if (!myFile.exists()) myFile.getParentFile().mkdirs()
-
-        myFile.write(content)
-    }
-
     void image() {
         def dot = dot()
 
@@ -88,12 +80,9 @@ class FamilyTreeService {
                 .nodes().forEach(node ->
                 node.add(
                         Color.named(node.name().toString()),
-                        Style.lineWidth(4), Style.FILLED));
+                        Style.lineWidth(4), Style.FILLED))
 
-        def userHome = System.getProperty("user.home");
-        def myPath = "${userHome}/.family/family.png"
-
-        Graphviz.fromGraph(g).width(7000).render(Format.PNG).toFile(new File(myPath));
+        Graphviz.fromGraph(g).width(7000).render(Format.PNG).toFile(new File(fileRepository.filePath("family-tree.png")))
 
     }
 }

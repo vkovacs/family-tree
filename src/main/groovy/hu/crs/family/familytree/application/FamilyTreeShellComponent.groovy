@@ -31,7 +31,8 @@ class FamilyTreeShellComponent {
 
     @ShellMethod(value = "List family members")
     void list() {
-        familyTreeService.listMembers()
+        def members = familyTreeService.listMembers()
+        println(members)
     }
 
     @ShellMethod(value = "Persist family into file")
