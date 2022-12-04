@@ -16,11 +16,11 @@ class FamilyTreeShellComponent {
 
     @ShellMethod(value = "Add member to family")
     void add(String name,
-             @ShellOption(value = "-m", defaultValue = "") String motherId,
-             @ShellOption(value = "-f", defaultValue = "") String fatherId,
-             @ShellOption(value = "-b", defaultValue = "") String yearOfBirth,
-             @ShellOption(value = "-d", defaultValue = "") String yearOfDeath,
-             @ShellOption(value = "-n", defaultValue = "") String note) {
+             @ShellOption(value = "-m", defaultValue = "", help = "Specify the id of the mother") String motherId,
+             @ShellOption(value = "-f", defaultValue = "", help = "Specify the id of the father") String fatherId,
+             @ShellOption(value = "-b", defaultValue = "", help = "Specify the year of birth") String yearOfBirth,
+             @ShellOption(value = "-d", defaultValue = "", help = "Specify the year of death") String yearOfDeath,
+             @ShellOption(value = "-n", defaultValue = "", help = "Specify notes") String note) {
 
         def yearOfBirthInt = yearOfBirth == "" ? null : yearOfBirth as Integer
         def yearOfDeathInt = yearOfDeath == "" ? null : yearOfDeath as Integer
@@ -35,12 +35,12 @@ class FamilyTreeShellComponent {
         println(members)
     }
 
-    @ShellMethod(value = "Persist family into file")
+    @ShellMethod(value = "Persist family into file in user home")
     void save() {
         familyTreeService.persistFamily()
     }
 
-    @ShellMethod(value = "Load family drom file")
+    @ShellMethod(value = "Load family from file")
     void load() {
         familyTreeService.loadFamily()
     }
