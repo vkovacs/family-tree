@@ -35,10 +35,8 @@ class DotService {
             }.join(" ")
 
             content += """
-                "$fatherId" -> {$children}
-                "$motherId" -> {$children}
-                "$fatherId" -> "$motherId"
-                "$motherId" -> "$fatherId"
+                "$motherId" -- {$children}
+                "$fatherId" -- "$motherId"
                 """
         }
 
@@ -48,6 +46,6 @@ class DotService {
                 """
         }
 
-        "digraph G { ${content} }"
+        "graph G { ${content} }"
     }
 }
