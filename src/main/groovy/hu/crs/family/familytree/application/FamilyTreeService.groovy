@@ -3,6 +3,12 @@ package hu.crs.family.familytree.application
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import groovy.util.logging.Slf4j
+import guru.nidi.graphviz.attribute.Color
+import guru.nidi.graphviz.attribute.Style
+import guru.nidi.graphviz.engine.Format
+import guru.nidi.graphviz.engine.Graphviz
+import guru.nidi.graphviz.model.MutableGraph
+import guru.nidi.graphviz.parse.Parser
 import hu.crs.family.familytree.application.domain.Member
 import hu.crs.family.familytree.application.domain.Parents
 import hu.crs.family.familytree.application.persistence.FamilyRepository
@@ -60,9 +66,8 @@ class FamilyTreeService {
         familyRepository.setFamily(family)
     }
 
-    void dot() {
-        def dot = dotService.dot()
-        println(dot)
+    String dot() {
+        dotService.dot()
     }
 
     private void saveFile(String filename, String content) {
@@ -70,5 +75,25 @@ class FamilyTreeService {
         if (!myFile.exists()) myFile.getParentFile().mkdirs()
 
         myFile.write(content)
+    }
+
+    void image() {
+        def dot = dot()
+
+        MutableGraph g = new Parser().read(dot);
+
+        g.graphAttrs()
+                .add(Color.WHITE.gradient(Color.rgb("888888")).background().angle(90))
+                .nodeAttrs().add(Color.WHITE.fill())
+                .nodes().forEach(node ->
+                node.add(
+                        Color.named(node.name().toString()),
+                        Style.lineWidth(4), Style.FILLED));
+
+        def userHome = System.getProperty("user.home");
+        def myPath = "${userHome}/.family/family.png"
+
+        Graphviz.fromGraph(g).width(7000).render(Format.PNG).toFile(new File(myPath));
+
     }
 }

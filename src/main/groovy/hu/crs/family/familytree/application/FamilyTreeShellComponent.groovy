@@ -46,6 +46,12 @@ class FamilyTreeShellComponent {
 
     @ShellMethod(value = "Dot representation of the family")
     void dot() {
-        familyTreeService.dot()
+        def dot = familyTreeService.dot()
+        println(dot)
+    }
+
+    @ShellMethod(value = "Save image of the family tree")
+    void image() {
+        familyTreeService.image()
     }
 }
