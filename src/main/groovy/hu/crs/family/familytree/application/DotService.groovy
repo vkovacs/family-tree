@@ -38,7 +38,8 @@ class DotService {
             if (!unknownParentIds.contains(motherId) && !unknownParentIds.contains(fatherId)) {
                 content += """
                     "$motherId" -- {$childrenIds}
-                    "$fatherId" -- "$motherId"
+                    "$fatherId" -- {$childrenIds}
+                    "$fatherId" -- "$motherId" [style=dashed, color = crimson]
                     """
             }
         }
